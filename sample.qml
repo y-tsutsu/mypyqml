@@ -1,39 +1,31 @@
 import QtQuick 2.0
 
 Rectangle {
-    id: imageViewer
-    width: 512
-    height: 512
+    width: 640
+    height: 480
 
-    Image {
-        id: view
-        clip: true
-        sourceSize.width: 0
-        anchors.fill: parent
-        source: imageUrl
+    function append(newElement) {
+        myModel.append(newElement)
+        if (myModel.count >= 1000) {
+            myModel.remove(0)
+        }
     }
 
-    Rectangle {
-        id: closeButton
-        width: 100
-        height: 100
-        color: 'gray'
-        anchors.right: parent.right
+    ListModel {
+        id: myModel
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            onPressed: {
-                Qt.quit()
-            }
-        }
+    ListView {
+        anchors.fill: parent
+        id: scheduleList
+        model: myModel
+        delegate: myDelegete
+    }
 
+    Component {
+        id: myDelegete
         Text {
-            text: 'close'
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            wrapMode: Text.NoWrap
+            text: message
         }
     }
 }
